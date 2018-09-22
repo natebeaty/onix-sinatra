@@ -28,7 +28,7 @@ class OnixApi < Sinatra::Base
       status 403
       return 'Bad request.'
     end
-    xml_out_filename = "output/onix-output-%s.xml" % json['onixData']['products'][0][0]['productId']
+    xml_out_filename = "public/output/onix-output-%s.xml" % json['onixData']['products'][0][0]['productId']
 
     # output xml file
     File.open(xml_out_filename, 'w') do |output|
