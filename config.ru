@@ -1,5 +1,3 @@
-require 'rubygems'
-Gem.clear_paths
-
-require "./api"
-run OnixApi
+require 'sinatra'
+require './api'
+run Sinatra::Application.run!
