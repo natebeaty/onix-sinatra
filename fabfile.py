@@ -22,3 +22,6 @@ def bundle():
 def restart():
   with cd(env.path):
     run('../bin/restart')
+
+def dev():
+  local('bundle exec ruby config.ru -e development')

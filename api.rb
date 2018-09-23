@@ -92,7 +92,9 @@ class OnixApi < Sinatra::Base
         end
 
         # audience_range
-        product.audience_range = json_product[0]['audienceRange']
+        if !(json_product[0]['audienceRange'].nil? || json_product[0]['audienceRange'].empty?)
+          product.audience_range = json_product[0]['audienceRange']
+        end
 
         # 10  Not yet available (needs expectedshipdate)
         # 11  Awaiting stock (needs expectedshipdate)
@@ -126,3 +128,4 @@ class OnixApi < Sinatra::Base
     # }.to_json
   end
 end
+run OnixApi.run!
