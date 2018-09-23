@@ -1,15 +1,23 @@
 require 'dotenv/load'
-require 'sinatra'
-require 'sinatra/reloader' if development?
+require 'sinatra/base'
+require 'sinatra/reloader'
 require 'json'
 require 'onix'
 require 'bigdecimal'
 require 'bigdecimal/util'
 
 class OnixApi < Sinatra::Base
+  configure :development do
+    register Sinatra::Reloader
+  end
+
   get '/' do
     status 403
     'Bad request.'
+  end
+
+  get '/test' do
+    'Hello!'
   end
 
   post '/api' do
@@ -128,4 +136,3 @@ class OnixApi < Sinatra::Base
     # }.to_json
   end
 end
-#run OnixApi.run!

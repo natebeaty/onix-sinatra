@@ -24,4 +24,4 @@ def restart():
     run('../bin/restart')
 
 def dev():
-  local('bundle exec ruby config.ru -e development')
+  local('bundle exec rackup -E development config.ru')
