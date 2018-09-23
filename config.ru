@@ -1,3 +1,3 @@
-require 'sinatra'
-require './api'
-run Sinatra::Application.run!
+require File.expand_path('api', File.dirname(__FILE__))
+
+run OnixApi
