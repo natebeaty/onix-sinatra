@@ -11,6 +11,10 @@ get '/' do
   'Bad request.'
 end
 
+get '/test' do
+  'Hello.'
+end
+
 post '/api' do
   # rudimentary auth
   api_key = params.fetch :api_key, ''
