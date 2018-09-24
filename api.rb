@@ -36,7 +36,7 @@ class OnixApi < Sinatra::Base
       status 403
       return 'Bad request.'
     end
-    xml_out_filename = "public/output/onix-output-%s.xml" % json['onixData']['products'][0][0]['productId']
+    xml_out_filename = "public/output/onix-output-%s.xml" % json['onixData']['products'][0]['productId']
 
     # output xml file
     File.open(xml_out_filename, 'w') do |output|
@@ -54,54 +54,66 @@ class OnixApi < Sinatra::Base
         product.notification_type = 3
         product.measurement_system = :imperial
 
-        product.width = json_product[0]['width']
-        product.height = json_product[0]['height']
-        product.thickness = json_product[0]['thickness']
-        product.number_of_pages = json_product[0]['pageCount'].to_i
+        product.title = json_product['title']
+        product.subtitle = json_product['subtitle']
+        product.main_description = json_product['description']
+        product.short_description = json_product['shortDescription']
+
+        json_product['authors'].each do |author|
+          product.add_contributor(author['nameReverse'], author['bio'])
+        end
+
+        product.add_contributor(json_product['authorReverse'], json_product['authorBio'])
+
+        product.width = json_product['width']
+        product.height = json_product['height']
+        product.thickness = json_product['thickness']
+        product.number_of_pages = json_product['pageCount'].to_i
 
         # images
-        product.thumbnail_url = json_product[0]['thumbnail']
-        product.cover_url = json_product[0]['coverUrl']
-        product.cover_url_hq = json_product[0]['coverUrlHq']
+        product.thumbnail_url = json_product['thumbnail']
+        product.cover_url = json_product['coverUrl']
+        product.cover_url_hq = json_product['coverUrlHq']
 
         # ? what is this
-        product.proprietary_id = json_product[0]['productId']
+        product.proprietary_id = json_product['productId']
         # also unsure of this
-        product.record_reference = json_product[0]['productId']
+        product.record_reference = json_product['productId']
         # do we need both isbn?
-        product.isbn10 = json_product[0]['isbn10']
-        product.isbn13 = json_product[0]['isbn13']
-
-        product.title = json_product[0]['title']
-        product.subtitle = json_product[0]['subtitle']
-        product.main_description = json_product[0]['description']
-        product.short_description = json_product[0]['shortDescription']
-        product.add_contributor(json_product[0]['authorReverse'])
+        product.isbn10 = json_product['isbn10']
+        product.isbn13 = json_product['isbn13']
 
         # product.imprint = "Malhame"
-        product.publisher = json_product[0]['publisher']
+        product.publisher = json_product['publisher']
+        product.publisher_website = json_product['url']
 
         # what's this?
         # product.sales_restriction_type = 0
 
-        product.supplier_website = json_product[0]['supplier']['url']
-        product.supplier_name = json_product[0]['supplier']['name']
-        product.supplier_phone = json_product[0]['supplier']['phone']
-        product.supplier_fax = json_product[0]['supplier']['fax']
-        product.supplier_email = json_product[0]['supplier']['email']
+        # this sets <website> type 12, "A webpage devoted to an individual work, and maintained by a third party (eg a fan site)"
+        # product.supplier_website = json_product['supplier']['url']
+        product.supplier_name = json_product['supplier']['name']
+        product.supplier_phone = json_product['supplier']['phone']
+        product.supplier_fax = json_product['supplier']['fax']
+        product.supplier_email = json_product['supplier']['email']
         product.supply_country = "US"
 
         # subjects
-        json_product[0]['bisacCodes'].each_with_index do |bisac_code, i|
+        json_product['bisacCodes'].each_with_index do |bisac_code, i|
           if i == 0
             product.bic_main_subject = bisac_code
           end
           product.add_bisac_subject(bisac_code)
         end
 
+        # comp titles
+        json_product['compTitles'].each do |isbn|
+          product.add_comp_title(isbn)
+        end
+
         # audience_range
-        if !(json_product[0]['audienceRange'].nil? || json_product[0]['audienceRange'].empty?)
-          product.audience_range = json_product[0]['audienceRange']
+        if !(json_product['audienceRange'].nil? || json_product['audienceRange'].empty?)
+          product.audience_range = json_product['audienceRange']
         end
 
         # 10  Not yet available (needs expectedshipdate)
@@ -110,14 +122,14 @@ class OnixApi < Sinatra::Base
         # 21  In stock
         product.product_availability = 20
 
-        product.product_form = json_product[0]['productForm']
-        product.product_form_detail = json_product[0]['productFormDetail']
+        product.product_form = json_product['productForm']
+        product.product_form_detail = json_product['productFormDetail']
 
-        product.add_illustration(json_product[0]['illustrationOtherContentType'])
+        product.add_illustration(json_product['illustrationOtherContentType'])
 
         #product.on_order = 20
-        product.on_hand = json_product[0]['quantity']
-        product.rrp_exc_sales_tax = json_product[0]['retail'].to_d
+        product.on_hand = json_product['quantity']
+        product.rrp_exc_sales_tax = json_product['retail'].to_d
 
         writer << product
       end
