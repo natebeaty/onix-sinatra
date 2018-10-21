@@ -1,6 +1,7 @@
 GIT
   remote: git://github.com/natebeaty/onix.git
-  revision: 196fb8bfc5c937911ceb1e97982b9e17ffbf27fa
+  revision: 53b5e6c1bc784eac30c01cc557345900e2ebef10
+  ref: 53b5e6c
   branch: master
   specs:
     onix (0.10.0)
@@ -23,7 +24,7 @@ GEM
     mini_portile2 (2.3.0)
     multi_json (1.13.1)
     mustermann (1.0.3)
-    nokogiri (1.8.4)
+    nokogiri (1.8.5)
       mini_portile2 (~> 2.3.0)
     rack (2.0.5)
     rack-protection (2.0.2)

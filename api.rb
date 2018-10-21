@@ -11,16 +11,15 @@ class OnixApi < Sinatra::Base
     register Sinatra::Reloader
   end
 
+  # we're a dumb api
   get '/' do
     status 403
     'Bad request.'
   end
 
-  get '/test' do
-    'Hello!'
-  end
-
+  # handle api request
   post '/api' do
+
     # rudimentary auth
     api_key = params.fetch :api_key, ''
     if api_key != ENV['ONIX_API_KEY']
@@ -36,7 +35,15 @@ class OnixApi < Sinatra::Base
       status 403
       return 'Bad request.'
     end
-    xml_out_filename = "public/output/onix-output-%s.xml" % json['onixData']['products'][0]['productId']
+
+    # construct xml filename
+    if json['onixData']['products'].length == 1
+      # single product
+      xml_out_filename = "public/output/onix-output-%s.xml" % json['onixData']['products'][0]['productId']
+    else
+      # array of products, use comma-separated ids in filename
+      xml_out_filename = "public/output/onix-output-%s.xml" % json['onixData']['products'].collect {|p| p['productId']}
+    end
 
     # output xml file
     File.open(xml_out_filename, 'w') do |output|
@@ -58,6 +65,7 @@ class OnixApi < Sinatra::Base
         product.subtitle = json_product['subtitle']
         product.main_description = json_product['description']
         product.short_description = json_product['shortDescription']
+        product.publication_date = Date.parse(json_product['publish_date'])
 
         json_product['authors'].each do |author|
           product.add_contributor(author['nameReverse'], author['bio'])
@@ -129,7 +137,9 @@ class OnixApi < Sinatra::Base
 
         #product.on_order = 20
         product.on_hand = json_product['quantity']
-        product.rrp_exc_sales_tax = json_product['retail'].to_d
+        product.add_price(1, json_product['retail'].to_d, 'USD')
+        product.add_price(1, json_product['retail_canada'].to_d, 'CAD')
+        # product.rrp_exc_sales_tax = json_product['retail'].to_d
 
         writer << product
       end
