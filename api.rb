@@ -114,9 +114,20 @@ class OnixApi < Sinatra::Base
           product.add_bisac_subject(bisac_code)
         end
 
+        # codes for relatedProduct types
+        # "23" => "Similar product",
+        # "27" => "Electronic version available as",
+        # "13" => "Epublication based on (print product)",
+
         # comp titles
         json_product['compTitles'].each do |isbn|
-          product.add_comp_title(isbn)
+          product.add_related_product(23, isbn)
+          # product.add_comp_title(isbn)
+        end
+
+        # ebook versions
+        json_product['eBooks'].each do |isbn|
+          product.add_related_product(13, isbn)
         end
 
         # audience_range
