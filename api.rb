@@ -104,7 +104,11 @@ class OnixApi < Sinatra::Base
         product.supplier_phone = json_product['supplier']['phone']
         product.supplier_fax = json_product['supplier']['fax']
         product.supplier_email = json_product['supplier']['email']
-        product.supply_country = "US"
+        product.supply_country = 'US'
+
+        # "06" => "Publisher’s sales expectation"
+        # holding off on this as it makes no sense, originally was trying to populate "estimated sales" field from admin
+        # product.add_supplier_own_coding('06', json_product['isbn13'])
 
         # subjects
         json_product['bisacCodes'].each_with_index do |bisac_code, i|
@@ -140,6 +144,10 @@ class OnixApi < Sinatra::Base
         # 20  Available
         # 21  In stock
         product.product_availability = 20
+
+        # Add reviews
+        # "08" => "Review quote" (from list 33)
+        product.add_other_text(8, json_product['reviews_text'])
 
         product.product_form = json_product['productForm']
         product.product_form_detail = json_product['productFormDetail']
