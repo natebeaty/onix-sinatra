@@ -87,8 +87,6 @@ class OnixApi < Sinatra::Base
         product.proprietary_id = json_product['productId']
         # also unsure of this
         product.record_reference = json_product['productId']
-        # do we need both isbn?
-        product.isbn10 = json_product['isbn10']
         product.isbn13 = json_product['isbn13']
 
         # product.imprint = "Malhame"
