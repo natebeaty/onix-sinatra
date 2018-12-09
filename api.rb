@@ -39,10 +39,9 @@ class OnixApi < Sinatra::Base
     # construct xml filename
     if json['onixData']['products'].length == 1
       # single product
-      xml_out_filename = "public/output/onix-output-%s.xml" % json['onixData']['products'][0]['productId']
+      xml_out_filename = "public/output/onix-%s.xml" % json['onixData']['products'][0]['productId']
     else
-      # array of products, use comma-separated ids in filename
-      xml_out_filename = "public/output/onix-output-%s.xml" % json['onixData']['products'].collect {|p| p['productId']}
+      xml_out_filename = "public/output/onix-multiple-%s.xml" % Time.now.getutc
     end
 
     # output xml file
@@ -73,9 +72,15 @@ class OnixApi < Sinatra::Base
 
         product.add_contributor(json_product['authorReverse'], json_product['authorBio'])
 
-        product.width = json_product['width']
-        product.height = json_product['height']
-        product.thickness = json_product['thickness']
+        if !json_product['width'].empty?
+          product.width = json_product['width']
+        end
+        if !json_product['height'].empty?
+          product.height = json_product['height']
+        end
+        if !json_product['thickness'].empty?
+          product.thickness = json_product['thickness']
+        end
         product.number_of_pages = json_product['pageCount'].to_i
 
         # images
