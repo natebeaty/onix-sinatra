@@ -94,7 +94,7 @@ class OnixApi < Sinatra::Base
         product.record_reference = json_product['productId']
         product.isbn13 = json_product['isbn13']
 
-        # product.imprint = "Malhame"
+        product.imprint = json_product['imprint']
         product.publisher = json_product['publisher']
         product.publisher_website = json_product['url']
 
