@@ -101,6 +101,9 @@ class OnixApi < Sinatra::Base
         # what's this?
         # product.sales_restriction_type = 0
 
+        # Set sales rights
+        product.add_sales_rights('02', '', 'WORLD')
+
         # this sets <website> type 12, "A webpage devoted to an individual work, and maintained by a third party (eg a fan site)"
         # product.supplier_website = json_product['supplier']['url']
         product.supplier_name = json_product['supplier']['name']
