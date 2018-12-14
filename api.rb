@@ -65,6 +65,7 @@ class OnixApi < Sinatra::Base
         product.main_description = json_product['description']
         product.short_description = json_product['shortDescription']
         product.publication_date = Date.parse(json_product['publish_date'])
+        product.on_sale_date = Date.parse(json_product['ship_date'])
 
         json_product['authors'].each do |author|
           product.add_contributor(author['nameReverse'], author['bio'])
@@ -145,11 +146,36 @@ class OnixApi < Sinatra::Base
           product.audience_range = json_product['audienceRange']
         end
 
-        # 10  Not yet available (needs expectedshipdate)
-        # 11  Awaiting stock (needs expectedshipdate)
-        # 20  Available
-        # 21  In stock
-        product.product_availability = 20
+        # list 65
+        # "10" => "Not yet available (needs expectedshipdate)",
+        # "11" => "Awaiting stock (needs expectedshipdate)",
+        # "20" => "Available",
+        # "21" => "In stock",
+        # "31" => "Out of stock",
+
+        if json_product['status'] == 'A'
+          product.product_availability = 20
+        elsif json_product['status'] == 'P'
+          product.product_availability = 10
+          product.expected_ship_date = Date.parse(json_product['ship_date'])
+        elsif json_product['status'] == 'N'
+          product.product_availability = 31
+        end
+
+        # list 54
+        # "IP" => "Available",
+        # "NP" => "Not yet published",
+        # "OP" => "Out of print",
+        # "TU" => "Temporarily unavailable",
+        if json_product['outOfPrint'] == '1'
+          product.availability_code = 'OP'
+        elsif json_product['status'] == 'P'
+          product.availability_code = 'NP'
+        elsif json_product['status'] == 'N'
+          product.availability_code = 'TU'
+        else
+          product.availability_code = 'IP'
+        end
 
         # Add reviews
         # "08" => "Review quote" (from list 33)
