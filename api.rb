@@ -119,7 +119,7 @@ class OnixApi < Sinatra::Base
         # subjects
         json_product['bisacCodes'].each_with_index do |bisac_code, i|
           if i == 0
-            product.bic_main_subject = bisac_code
+            product.basic_main_subject = bisac_code
           end
           product.add_bisac_subject(bisac_code)
         end
