@@ -68,10 +68,8 @@ class OnixApi < Sinatra::Base
         product.on_sale_date = Date.parse(json_product['ship_date'])
 
         json_product['authors'].each do |author|
-          product.add_contributor(author['nameReverse'], author['bio'])
+          product.add_contributor(author['nameReverse'], author['bio'], author['roleCode'])
         end
-
-        product.add_contributor(json_product['authorReverse'], json_product['authorBio'])
 
         if !json_product['width'].empty?
           product.width = json_product['width']
@@ -153,12 +151,12 @@ class OnixApi < Sinatra::Base
         # "21" => "In stock",
         # "31" => "Out of stock",
 
-        if json_product['status'] == 'A'
+        if json_product['status'] == 'A' # "In Stock" status
           product.product_availability = 20
-        elsif json_product['status'] == 'P'
+        elsif json_product['status'] == 'P' # "Pre-Order" status
           product.product_availability = 10
           product.expected_ship_date = Date.parse(json_product['ship_date'])
-        elsif json_product['status'] == 'N'
+        elsif json_product['status'] == 'N' # "Out of Stock" status
           product.product_availability = 31
         end
 
@@ -167,11 +165,11 @@ class OnixApi < Sinatra::Base
         # "NP" => "Not yet published",
         # "OP" => "Out of print",
         # "TU" => "Temporarily unavailable",
-        if json_product['outOfPrint'] == '1'
+        if json_product['outOfPrint'] == '1' # Marked as Out of Print
           product.availability_code = 'OP'
-        elsif json_product['status'] == 'P'
+        elsif json_product['status'] == 'P' # "Pre-Order" status
           product.availability_code = 'NP'
-        elsif json_product['status'] == 'N'
+        elsif json_product['status'] == 'N' # "Out of Stock" status
           product.availability_code = 'TU'
         else
           product.availability_code = 'IP'
