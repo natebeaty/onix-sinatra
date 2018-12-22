@@ -64,8 +64,8 @@ class OnixApi < Sinatra::Base
         product.subtitle = json_product['subtitle']
         product.main_description = json_product['description']
         product.short_description = json_product['shortDescription']
-        product.publication_date = Date.parse(json_product['publish_date'])
-        product.on_sale_date = Date.parse(json_product['ship_date'])
+        product.publication_date = Date.parse(json_product['publishDate'])
+        product.on_sale_date = Date.parse(json_product['shipDate'])
 
         json_product['authors'].each do |author|
           product.add_contributor(author['nameReverse'], author['bio'], author['roleCode'])
@@ -187,8 +187,13 @@ class OnixApi < Sinatra::Base
         #product.on_order = 20
         product.on_hand = json_product['quantity']
         product.add_price(1, json_product['retail'].to_d, 'USD')
-        product.add_price(1, json_product['retail_canada'].to_d, 'CAD')
+        product.add_price(1, json_product['retailCanada'].to_d, 'CAD')
         # product.rrp_exc_sales_tax = json_product['retail'].to_d
+
+        # Carton Quantity
+        if !json_product['packQuantity'].nil?
+          product.pack_quantity = json_product['packQuantity'].to_d
+        end
 
         writer << product
       end
