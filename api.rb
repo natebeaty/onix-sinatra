@@ -68,7 +68,7 @@ class OnixApi < Sinatra::Base
         product.on_sale_date = Date.parse(json_product['shipDate'])
 
         # Edition?
-        if !json_product['edition'].nil?
+        if !json_product['edition'].nil? && !json_product['edition'].empty?
           product.edition_number = json_product['edition']
         end
 
@@ -146,7 +146,7 @@ class OnixApi < Sinatra::Base
         end
 
         # audience_range
-        if !(json_product['audienceRange'].nil? || json_product['audienceRange'].empty?)
+        if !json_product['audienceRange'].nil? && !json_product['audienceRange'].empty?
           product.audience_range = json_product['audienceRange']
         end
 
@@ -197,7 +197,7 @@ class OnixApi < Sinatra::Base
         # product.rrp_exc_sales_tax = json_product['retail'].to_d
 
         # Carton Quantity
-        if !json_product['packQuantity'].nil?
+        if !json_product['packQuantity'].nil? && !json_product['packQuantity'].empty?
           product.pack_quantity = json_product['packQuantity'].to_d
         end
 
