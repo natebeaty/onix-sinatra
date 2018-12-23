@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/natebeaty/onix.git
-  revision: 09ebc0acf377b9e674153769c829040d7546f2fa
-  ref: 09ebc0acf377b9e674153769c829040d7546f2fa
+  revision: 0b71cc323eb0127c4eeff75bbaae9f3be97b3668
+  ref: 0b71cc323eb0127c4eeff75bbaae9f3be97b3668
   branch: master
   specs:
     onix (0.10.0)
@@ -56,4 +56,4 @@ DEPENDENCIES
   sinatra-contrib
 
 BUNDLED WITH
-   1.16.5
+   1.17.2
