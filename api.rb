@@ -67,6 +67,11 @@ class OnixApi < Sinatra::Base
         product.publication_date = Date.parse(json_product['publishDate'])
         product.on_sale_date = Date.parse(json_product['shipDate'])
 
+        # Edition?
+        if !json_product['edition'].nil?
+          product.edition_number = json_product['edition']
+        end
+
         json_product['authors'].each do |author|
           product.add_contributor(author['nameReverse'], author['bio'], author['roleCode'])
         end
@@ -80,6 +85,7 @@ class OnixApi < Sinatra::Base
         if !json_product['thickness'].empty?
           product.thickness = json_product['thickness']
         end
+
         product.number_of_pages = json_product['pageCount'].to_i
 
         # images
