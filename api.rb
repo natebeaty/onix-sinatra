@@ -93,6 +93,36 @@ class OnixApi < Sinatra::Base
         product.cover_url = json_product['coverUrl']
         product.cover_url_hq = json_product['coverUrlHq']
 
+        # sample content
+        # from list 38, MediaFileTypeCode
+        # "03" => "Image: whole cover",
+        # "04" => "Image: front cover",
+        # "05" => "Image: whole cover, high quality",
+        # "06" => "Image: front cover, high quality",
+        # "07" => "Image: front cover thumbnail",
+        # "08" => "Image: contributor(s)",
+        # "17" => "Image: publisher logo",
+        # "18" => "Image: imprint logo",
+        # "23" => "Image: sample content",
+        # "24" => "Image: back cover",
+        # "25" => "Image: back cover, high quality",
+        # "26" => "Image: back cover thumbnail",
+
+        # from list 40, MediaFileLinkTypeCode
+        # "01" => "URL",
+        # "02" => "DOI",
+        # "03" => "PURL",
+        # "04" => "URN",
+        # "05" => "FTP address",
+        # "06" => "filename"
+
+        # add all interiors as media files
+        if !json_product['interiors'].nil? && !json_product['interiors'].empty?
+          json_product['interiors'].each do |image|
+            product.add_media_file(23, 1, image)
+          end
+        end
+
         # ? what is this
         product.proprietary_id = json_product['productId']
         # also unsure of this

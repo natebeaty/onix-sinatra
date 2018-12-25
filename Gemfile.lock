@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/natebeaty/onix.git
-  revision: 0b71cc323eb0127c4eeff75bbaae9f3be97b3668
-  ref: 0b71cc323eb0127c4eeff75bbaae9f3be97b3668
+  revision: bbccedf9f9bd90fe1f54f9a455f387a87be62fe3
+  ref: bbccedf9f9bd90fe1f54f9a455f387a87be62fe3
   branch: master
   specs:
     onix (0.10.0)
@@ -16,7 +16,7 @@ GEM
     activesupport (3.2.22.5)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
-    backports (2.8.2)
+    backports (3.11.4)
     concurrent-ruby (1.1.4)
     dotenv (2.5.0)
     i18n (0.9.5)
@@ -26,25 +26,25 @@ GEM
     mustermann (1.0.3)
     nokogiri (1.9.1)
       mini_portile2 (~> 2.4.0)
-    rack (2.0.5)
-    rack-protection (2.0.2)
+    rack (2.0.6)
+    rack-protection (2.0.5)
       rack
     roxml (3.3.1)
       activesupport (>= 2.3.0)
       nokogiri (>= 1.3.3)
-    sinatra (2.0.2)
+    sinatra (2.0.5)
       mustermann (~> 1.0)
       rack (~> 2.0)
-      rack-protection (= 2.0.2)
+      rack-protection (= 2.0.5)
       tilt (~> 2.0)
-    sinatra-contrib (2.0.2)
-      backports (~> 2.8.2)
+    sinatra-contrib (2.0.5)
+      backports (>= 2.8.2)
       multi_json
       mustermann (~> 1.0)
-      rack-protection (= 2.0.2)
-      sinatra (= 2.0.2)
+      rack-protection (= 2.0.5)
+      sinatra (= 2.0.5)
       tilt (>= 1.3, < 3)
-    tilt (2.0.8)
+    tilt (2.0.9)
 
 PLATFORMS
   ruby

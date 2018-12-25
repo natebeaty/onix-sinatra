@@ -2,5 +2,5 @@ source 'https://rubygems.org'
 
 gem 'sinatra'
 gem 'sinatra-contrib'
-gem 'onix', github: 'natebeaty/onix', branch: 'master', ref: '0b71cc323eb0127c4eeff75bbaae9f3be97b3668'
+gem 'onix', github: 'natebeaty/onix', branch: 'master', ref: 'bbccedf9f9bd90fe1f54f9a455f387a87be62fe3'
 gem 'dotenv'
