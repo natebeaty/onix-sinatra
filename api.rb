@@ -196,6 +196,11 @@ class OnixApi < Sinatra::Base
           product.product_availability = 31
         end
 
+        # publishing_status
+        if !json_product['publishingStatus'].nil? && !json_product['publishingStatus'].empty?
+          product.publishing_status = json_product['publishingStatus']
+        end
+
         # list 54
         # "IP" => "Available",
         # "NP" => "Not yet published",
