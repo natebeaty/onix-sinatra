@@ -216,9 +216,22 @@ class OnixApi < Sinatra::Base
           product.availability_code = 'IP'
         end
 
-        # Add reviews
+        # Add various other text
+
         # "08" => "Review quote" (from list 33)
-        product.add_other_text(8, json_product['reviews_text'])
+        if !json_product['reviewsText'].nil? && !json_product['reviewsText'].empty?
+          product.add_other_text(8, json_product['reviewsText'])
+        end
+
+        # Add "25" => "Description for sales people"
+        if !json_product['descriptionForSalesPeople'].nil? && !json_product['descriptionForSalesPeople'].empty?
+          product.add_other_text(25, json_product['descriptionForSalesPeople'])
+        end
+
+        # Add "26" => "Description for press or other media"
+        if !json_product['descriptionForPressOrOtherMedia'].nil? && !json_product['descriptionForPressOrOtherMedia'].empty?
+          product.add_other_text(26, json_product['descriptionForPressOrOtherMedia'])
+        end
 
         product.product_form = json_product['productForm']
         product.product_form_detail = json_product['productFormDetail']
