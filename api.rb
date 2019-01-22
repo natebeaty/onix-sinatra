@@ -187,14 +187,14 @@ class OnixApi < Sinatra::Base
         # "21" => "In stock",
         # "31" => "Out of stock",
 
-        if json_product['status'] == 'A' # "In Stock" status
-          product.product_availability = 20
-        elsif json_product['status'] == 'P' # "Pre-Order" status
-          product.product_availability = 10
-          product.expected_ship_date = Date.parse(json_product['ship_date'])
-        elsif json_product['status'] == 'N' # "Out of Stock" status
-          product.product_availability = 31
-        end
+        # if json_product['status'] == 'A' # "In Stock" status
+        #   product.product_availability = 20
+        # elsif json_product['status'] == 'P' # "Pre-Order" status
+        #   product.product_availability = 10
+        #   product.expected_ship_date = Date.parse(json_product['ship_date'])
+        # elsif json_product['status'] == 'N' # "Out of Stock" status
+        #   product.product_availability = 31
+        # end
 
         # publishing_status
         if !json_product['publishingStatus'].nil? && !json_product['publishingStatus'].empty?
