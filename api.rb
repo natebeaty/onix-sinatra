@@ -67,9 +67,19 @@ class OnixApi < Sinatra::Base
         product.publication_date = Date.parse(json_product['publishDate'])
         product.on_sale_date = Date.parse(json_product['shipDate'])
 
+        # Series Title?
+        if !json_product['seriesTitle'].nil? && !json_product['seriesTitle'].empty?
+          product.series = json_product['seriesTitle']
+        end
+
         # Edition?
-        if !json_product['edition'].nil? && !json_product['edition'].empty?
-          product.edition_number = json_product['edition']
+        if !json_product['editionNumber'].nil? && !json_product['editionNumber'].empty?
+          product.edition_number = json_product['editionNumber']
+        end
+
+        # Volume? (numberWithinSeries is closest I could find for this request, awaiting feedback)
+        if !json_product['numberWithinSeries'].nil? && !json_product['numberWithinSeries'].empty?
+          product.number_within_series = json_product['numberWithinSeries']
         end
 
         json_product['authors'].each do |author|
