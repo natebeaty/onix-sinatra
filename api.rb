@@ -216,15 +216,15 @@ class OnixApi < Sinatra::Base
         # "NP" => "Not yet published",
         # "OP" => "Out of print",
         # "TU" => "Temporarily unavailable",
-        if json_product['outOfPrint'] == '1' # Marked as Out of Print
-          product.availability_code = 'OP'
-        elsif json_product['status'] == 'P' # "Pre-Order" status
-          product.availability_code = 'NP'
-        elsif json_product['status'] == 'N' # "Out of Stock" status
-          product.availability_code = 'TU'
-        else
-          product.availability_code = 'IP'
-        end
+        # if json_product['outOfPrint'] == '1' # Marked as Out of Print
+        #   product.availability_code = 'OP'
+        # elsif json_product['status'] == 'P' # "Pre-Order" status
+        #   product.availability_code = 'NP'
+        # elsif json_product['status'] == 'N' # "Out of Stock" status
+        #   product.availability_code = 'TU'
+        # else
+        #   product.availability_code = 'IP'
+        # end
 
         # Add various other text
 
