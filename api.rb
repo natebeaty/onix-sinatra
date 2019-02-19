@@ -202,6 +202,10 @@ class OnixApi < Sinatra::Base
         # productAvailability (list 65)
         if !json_product['productAvailability'].nil? && !json_product['productAvailability'].empty?
           product.product_availability = json_product['productAvailability']
+          # Populate expected_ship_date if 10 (Not yet available) or 11 (Awaiting stock)
+          if ['10', '11'].include? json_product['productAvailability']
+            product.expected_ship_date = Date.parse(json_product['shipDate'])
+          end
         end
 
         # list 54
