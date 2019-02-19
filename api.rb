@@ -61,7 +61,9 @@ class OnixApi < Sinatra::Base
         product.measurement_system = :imperial
 
         product.title = json_product['title']
-        product.subtitle = json_product['subtitle']
+        if !json_product['subtitle'].nil? && !json_product['subtitle'].empty?
+          product.subtitle = json_product['subtitle']
+        end
         product.main_description = json_product['description']
         product.short_description = json_product['shortDescription']
         product.publication_date = Date.parse(json_product['publishDate'])
@@ -139,7 +141,9 @@ class OnixApi < Sinatra::Base
         product.record_reference = json_product['productId']
         product.isbn13 = json_product['isbn13']
 
-        product.imprint = json_product['imprint']
+        if !json_product['imprint'].nil? && !json_product['imprint'].empty?
+          product.imprint = json_product['imprint']
+        end
         product.publisher = json_product['publisher']
         product.publisher_website = json_product['url']
 
@@ -190,25 +194,14 @@ class OnixApi < Sinatra::Base
           product.audience_range = json_product['audienceRange']
         end
 
-        # list 65
-        # "10" => "Not yet available (needs expectedshipdate)",
-        # "11" => "Awaiting stock (needs expectedshipdate)",
-        # "20" => "Available",
-        # "21" => "In stock",
-        # "31" => "Out of stock",
-
-        # if json_product['status'] == 'A' # "In Stock" status
-        #   product.product_availability = 20
-        # elsif json_product['status'] == 'P' # "Pre-Order" status
-        #   product.product_availability = 10
-        #   product.expected_ship_date = Date.parse(json_product['ship_date'])
-        # elsif json_product['status'] == 'N' # "Out of Stock" status
-        #   product.product_availability = 31
+        # publishing_status (list 64)
+        # if !json_product['publishingStatus'].nil? && !json_product['publishingStatus'].empty?
+        #   product.publishing_status = json_product['publishingStatus']
         # end
 
-        # publishing_status
-        if !json_product['publishingStatus'].nil? && !json_product['publishingStatus'].empty?
-          product.publishing_status = json_product['publishingStatus']
+        # productAvailability (list 65)
+        if !json_product['productAvailability'].nil? && !json_product['productAvailability'].empty?
+          product.product_availability = json_product['productAvailability']
         end
 
         # list 54
