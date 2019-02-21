@@ -240,8 +240,12 @@ class OnixApi < Sinatra::Base
           product.add_other_text(26, json_product['descriptionForPressOrOtherMedia'])
         end
 
-        product.product_form = json_product['productForm']
-        product.product_form_detail = json_product['productFormDetail']
+        if !json_product['productForm'].nil? && !json_product['productForm'].empty?
+          product.product_form = json_product['productForm']
+        end
+        if !json_product['productFormDetail'].nil? && !json_product['productFormDetail'].empty?
+          product.product_form_detail = json_product['productFormDetail']
+        end
 
         product.add_illustration(json_product['illustrationOtherContentType'])
 
