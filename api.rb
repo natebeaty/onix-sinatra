@@ -247,7 +247,9 @@ class OnixApi < Sinatra::Base
           product.product_form_detail = json_product['productFormDetail']
         end
 
-        product.add_illustration(json_product['illustrationOtherContentType'])
+        if !json_product['illustrationOtherContentType'].nil? && !json_product['illustrationOtherContentType'].empty?
+          product.add_illustration(json_product['illustrationOtherContentType'])
+        end
 
         #product.on_order = 20
         product.on_hand = json_product['quantity']
