@@ -101,9 +101,15 @@ class OnixApi < Sinatra::Base
         product.number_of_pages = json_product['pageCount'].to_i
 
         # images
-        product.thumbnail_url = json_product['thumbnail']
-        product.cover_url = json_product['coverUrl']
-        product.cover_url_hq = json_product['coverUrlHq']
+        if !json_product['thumbnail'].nil? && !json_product['thumbnail'].empty?
+          product.thumbnail_url = json_product['thumbnail']
+        end
+        if !json_product['coverUrl'].nil? && !json_product['coverUrl'].empty?
+          product.cover_url = json_product['coverUrl']
+        end
+        if !json_product['coverUrlHq'].nil? && !json_product['coverUrlHq'].empty?
+          product.cover_url_hq = json_product['coverUrlHq']
+        end
 
         # sample content
         # from list 38, MediaFileTypeCode
@@ -144,7 +150,9 @@ class OnixApi < Sinatra::Base
         if !json_product['imprint'].nil? && !json_product['imprint'].empty?
           product.imprint = json_product['imprint']
         end
-        product.publisher = json_product['publisher']
+        if !json_product['publisher'].nil? && !json_product['publisher'].empty?
+          product.publisher = json_product['publisher']
+        end
         product.publisher_website = json_product['url']
 
         # what's this?
