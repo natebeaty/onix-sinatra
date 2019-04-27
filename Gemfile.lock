@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/natebeaty/onix.git
-  revision: ff4f771672197236c6d0369638e245f528a760d1
-  ref: ff4f771672197236c6d0369638e245f528a760d1
+  revision: d3c815674cba9b93a4fb87bff7ff4ac4a8f9ee1f
+  ref: d3c815674cba9b93a4fb87bff7ff4ac4a8f9ee1f
   branch: master
   specs:
     onix (0.10.0)
@@ -17,14 +17,14 @@ GEM
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     backports (3.11.4)
-    concurrent-ruby (1.1.4)
+    concurrent-ruby (1.1.5)
     dotenv (2.5.0)
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
     mini_portile2 (2.4.0)
     multi_json (1.13.1)
     mustermann (1.0.3)
-    nokogiri (1.9.1)
+    nokogiri (1.10.3)
       mini_portile2 (~> 2.4.0)
     rack (2.0.6)
     rack-protection (2.0.5)
