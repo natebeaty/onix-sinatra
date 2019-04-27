@@ -59,33 +59,39 @@ class OnixApi < Sinatra::Base
 
         product.notification_type = 3
         product.measurement_system = :imperial
+        product.add_language('01', 'eng')
 
         product.title = json_product['title']
-        if !json_product['subtitle'].nil? && !json_product['subtitle'].empty?
+        if !json_product['subtitle'].blank?
           product.subtitle = json_product['subtitle']
         end
-        product.main_description = json_product['description']
-        product.short_description = json_product['shortDescription']
+
+        if !json_product['description'].blank?
+          product.main_description = json_product['description']
+        end
+        if !json_product['shortDescription'].blank?
+          product.short_description = json_product['shortDescription']
+        end
         product.publication_date = Date.parse(json_product['publishDate'])
         product.on_sale_date = Date.parse(json_product['shipDate'])
 
         # Series Title?
-        if !json_product['seriesTitle'].nil? && !json_product['seriesTitle'].empty?
+        if !json_product['seriesTitle'].blank?
           product.series = json_product['seriesTitle']
         end
 
         # Edition?
-        if !json_product['editionNumber'].nil? && !json_product['editionNumber'].empty?
+        if !json_product['editionNumber'].blank?
           product.edition_number = json_product['editionNumber']
         end
 
         # Volume? (numberWithinSeries is closest I could find for this request, awaiting feedback)
-        if !json_product['numberWithinSeries'].nil? && !json_product['numberWithinSeries'].empty?
+        if !json_product['numberWithinSeries'].blank?
           product.number_within_series = json_product['numberWithinSeries']
         end
 
         json_product['authors'].each do |author|
-          product.add_contributor(author['nameReverse'], author['bio'], author['roleCode'])
+          product.add_contributor(author['name'], author['nameReverse'], author['bio'], author['roleCode'])
         end
 
         if !json_product['width'].empty?
@@ -101,13 +107,13 @@ class OnixApi < Sinatra::Base
         product.number_of_pages = json_product['pageCount'].to_i
 
         # images
-        if !json_product['thumbnail'].nil? && !json_product['thumbnail'].empty?
+        if !json_product['thumbnail'].blank?
           product.thumbnail_url = json_product['thumbnail']
         end
-        if !json_product['coverUrl'].nil? && !json_product['coverUrl'].empty?
+        if !json_product['coverUrl'].blank?
           product.cover_url = json_product['coverUrl']
         end
-        if !json_product['coverUrlHq'].nil? && !json_product['coverUrlHq'].empty?
+        if !json_product['coverUrlHq'].blank?
           product.cover_url_hq = json_product['coverUrlHq']
         end
 
@@ -135,7 +141,7 @@ class OnixApi < Sinatra::Base
         # "06" => "filename"
 
         # add all interiors as media files
-        if !json_product['interiors'].nil? && !json_product['interiors'].empty?
+        if !json_product['interiors'].blank?
           json_product['interiors'].each do |image|
             product.add_media_file(23, 1, image)
           end
@@ -147,10 +153,10 @@ class OnixApi < Sinatra::Base
         product.record_reference = json_product['productId']
         product.isbn13 = json_product['isbn13']
 
-        if !json_product['imprint'].nil? && !json_product['imprint'].empty?
+        if !json_product['imprint'].blank?
           product.imprint = json_product['imprint']
         end
-        if !json_product['publisher'].nil? && !json_product['publisher'].empty?
+        if !json_product['publisher'].blank?
           product.publisher = json_product['publisher']
         end
         product.publisher_website = json_product['url']
@@ -198,17 +204,17 @@ class OnixApi < Sinatra::Base
         end
 
         # audience_range
-        if !json_product['audienceRange'].nil? && !json_product['audienceRange'].empty?
+        if !json_product['audienceRange'].blank?
           product.audience_range = json_product['audienceRange']
         end
 
         # publishing_status (list 64)
-        # if !json_product['publishingStatus'].nil? && !json_product['publishingStatus'].empty?
-        #   product.publishing_status = json_product['publishingStatus']
-        # end
+        if !json_product['publishingStatus'].blank?
+          product.publishing_status = json_product['publishingStatus']
+        end
 
         # productAvailability (list 65)
-        if !json_product['productAvailability'].nil? && !json_product['productAvailability'].empty?
+        if !json_product['productAvailability'].blank?
           product.product_availability = json_product['productAvailability']
           # Populate expected_ship_date if 10 (Not yet available) or 11 (Awaiting stock)
           if ['10', '11'].include? json_product['productAvailability']
@@ -234,39 +240,44 @@ class OnixApi < Sinatra::Base
         # Add various other text
 
         # "08" => "Review quote" (from list 33)
-        if !json_product['reviewsText'].nil? && !json_product['reviewsText'].empty?
+        if !json_product['reviewsText'].blank?
           product.add_other_text(8, json_product['reviewsText'])
         end
 
         # Add "25" => "Description for sales people"
-        if !json_product['descriptionForSalesPeople'].nil? && !json_product['descriptionForSalesPeople'].empty?
+        if !json_product['descriptionForSalesPeople'].blank?
           product.add_other_text(25, json_product['descriptionForSalesPeople'])
         end
 
         # Add "26" => "Description for press or other media"
-        if !json_product['descriptionForPressOrOtherMedia'].nil? && !json_product['descriptionForPressOrOtherMedia'].empty?
+        if !json_product['descriptionForPressOrOtherMedia'].blank?
           product.add_other_text(26, json_product['descriptionForPressOrOtherMedia'])
         end
 
-        if !json_product['productForm'].nil? && !json_product['productForm'].empty?
+        if !json_product['productForm'].blank?
           product.product_form = json_product['productForm']
         end
-        if !json_product['productFormDetail'].nil? && !json_product['productFormDetail'].empty?
+        if !json_product['productFormDetail'].blank?
           product.product_form_detail = json_product['productFormDetail']
         end
+        if !json_product['EpubType'].blank?
+          product.epub_type = json_product['EpubType']
+        end
 
-        if !json_product['illustrationOtherContentType'].nil? && !json_product['illustrationOtherContentType'].empty?
+        if !json_product['illustrationOtherContentType'].blank?
           product.add_illustration(json_product['illustrationOtherContentType'])
         end
 
         #product.on_order = 20
         product.on_hand = json_product['quantity']
-        product.add_price(1, json_product['retail'].to_d, 'USD')
-        product.add_price(1, json_product['retailCanada'].to_d, 'CAD')
+        product.add_price(1, json_product['retail'].to_d, 'USD', 'US')
+        product.add_price(1, json_product['retailCanada'].to_d, 'CAD', 'CA')
+        # ROW = rest of world territory
+        product.add_price(1, json_product['retail'].to_d, 'USD', '', 'ROW')
         # product.rrp_exc_sales_tax = json_product['retail'].to_d
 
         # Carton Quantity
-        if !json_product['packQuantity'].nil? && !json_product['packQuantity'].empty?
+        if !json_product['packQuantity'].blank?
           product.pack_quantity = json_product['packQuantity'].to_d
         end
 
@@ -285,5 +296,12 @@ class OnixApi < Sinatra::Base
     #   writer: writer,
     #   file: xml_out_filename
     # }.to_json
+  end
+
+  private
+
+  # steal Rails' blank? method
+  def blank?
+    respond_to?(:empty?) ? !!empty? : !self
   end
 end
