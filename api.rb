@@ -141,11 +141,12 @@ class OnixApi < Sinatra::Base
         # "06" => "filename"
 
         # add all interiors as media files
-        if !json_product['interiors'].blank?
-          json_product['interiors'].each do |image|
-            product.add_media_file(23, 1, image)
-          end
-        end
+        # disabling as of 5/15/19 per trello request
+        # if !json_product['interiors'].blank?
+        #   json_product['interiors'].each do |image|
+        #     product.add_media_file(23, 1, image)
+        #   end
+        # end
 
         # ? what is this
         product.proprietary_id = json_product['productId']
