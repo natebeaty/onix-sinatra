@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/natebeaty/onix.git
-  revision: 215117367c5dc8fe60c97bfbea40143c856412b5
-  ref: 215117367c5dc8fe60c97bfbea40143c856412b5
+  revision: fa56ccb1442fd123c49c006fca6aa7a06233f09f
+  ref: fa56ccb1442fd123c49c006fca6aa7a06233f09f
   branch: master
   specs:
     onix (0.10.0)
