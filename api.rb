@@ -78,16 +78,16 @@ class OnixApi < Sinatra::Base
         # Series Title?
         if !json_product['seriesTitle'].blank?
           product.series = json_product['seriesTitle']
+
+          # Populated from "Volume" field in admin
+          if !json_product['numberWithinSeries'].blank?
+            product.number_within_series = json_product['numberWithinSeries']
+          end
         end
 
         # Edition?
         if !json_product['editionNumber'].blank?
           product.edition_number = json_product['editionNumber']
-        end
-
-        # Volume? (numberWithinSeries is closest I could find for this request, awaiting feedback)
-        if !json_product['numberWithinSeries'].blank?
-          product.number_within_series = json_product['numberWithinSeries']
         end
 
         json_product['authors'].each do |author|
