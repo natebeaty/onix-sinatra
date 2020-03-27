@@ -13,7 +13,7 @@ Also: ONIX sucks.
 
 Copy .env.example to .env and set an API key to validate requests.
 
-Set up `rbenv` and `rbenv-gemsets` and install `.ruby-version` (currently 2.3.0) then `gem install bundler && bundle install`.
+Set up `rbenv` and `rbenv install 2.7.0` to match `.ruby-version` then `gem install bundler && bundle install`.
 
 If you have Fabric 1.4 you can run `fab dev` to fire up the app listening on http://127.0.0.1:9292
 
