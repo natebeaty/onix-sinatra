@@ -11,7 +11,7 @@ Also: ONIX sucks.
 
 ## Usage
 
-Copy .env.example to .env and set an API key to validate requests.
+Set up your env file with `cp .env.example .env` and set an API key to validate requests.
 
 Set up `rbenv` and `rbenv install 2.7.0` to match `.ruby-version` then `gem install bundler && bundle install`.
 
