@@ -29,8 +29,11 @@ GEM
     multi_json (1.14.1)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
+    nio4r (2.5.4)
     nokogiri (1.10.9)
       mini_portile2 (~> 2.4.0)
+    puma (5.0.2)
+      nio4r (~> 2.0)
     rack (2.2.2)
     rack-protection (2.0.8.1)
       rack
@@ -62,6 +65,7 @@ PLATFORMS
 DEPENDENCIES
   dotenv
   onix!
+  puma
   sinatra
   sinatra-contrib
 

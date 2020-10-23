@@ -1,9 +1,9 @@
 from fabric.api import *
 
-env.hosts = ['microcosmpublishing.com']
-env.user = 'microcosmpub'
+env.hosts = ['microcosm.opalstacked.com']
+env.user = 'microcosm'
 env.project_name = 'onix-sinatra'
-env.path = '/home/microcosmpub/webapps/passenger/%s' % env.project_name
+env.path = '/home/microcosmpub/apps/onix-api/%s' % env.project_name
 env.git_branch = 'master'
 
 def deploy():
@@ -21,7 +21,8 @@ def bundle():
 
 def restart():
   with cd(env.path):
-    run('../bin/restart')
+    run('../stop && wait 5')
+    run('../start')
 
 def dev():
   local('bundle exec rackup -E development config.ru')
