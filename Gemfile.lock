@@ -32,7 +32,7 @@ GEM
     nio4r (2.5.4)
     nokogiri (1.10.9)
       mini_portile2 (~> 2.4.0)
-    puma (5.0.2)
+    puma (4.3.6)
       nio4r (~> 2.0)
     rack (2.2.2)
     rack-protection (2.0.8.1)
@@ -65,7 +65,7 @@ PLATFORMS
 DEPENDENCIES
   dotenv
   onix!
-  puma
+  puma (~> 4.1)
   sinatra
   sinatra-contrib
 
