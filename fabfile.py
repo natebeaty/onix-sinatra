@@ -1,9 +1,11 @@
 from fabric.api import *
 
 env.hosts = ['microcosm.opalstacked.com']
-env.user = 'microcosm'
+env.user = 'cosm-www'
+env.shell = '/bin/bash -lic' # interactive shell to source .bashrc
+env.forward_agent = True
 env.project_name = 'onix-sinatra'
-env.path = '/home/microcosmpub/apps/onix-api/%s' % env.project_name
+env.path = '/home/cosm-www/apps/onix-api/%s' % env.project_name
 env.git_branch = 'master'
 
 def deploy():
@@ -21,7 +23,7 @@ def bundle():
 
 def restart():
   with cd(env.path):
-    run('../stop && wait 5')
+    run('../stop')
     run('../start')
 
 def dev():
