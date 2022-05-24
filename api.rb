@@ -73,7 +73,9 @@ class OnixApi < Sinatra::Base
           product.short_description = json_product['shortDescription']
         end
         product.publication_date = Date.parse(json_product['publishDate'])
-        product.on_sale_date = Date.parse(json_product['shipDate'])
+        if !json_product['shipDate'].blank?
+          product.on_sale_date = Date.parse(json_product['shipDate'])
+        end
 
         # Series Title?
         if !json_product['seriesTitle'].blank?
