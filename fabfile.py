@@ -1,30 +1,39 @@
-from fabric.api import *
+# Microcosm Publishing
+# Fabfile ONIX Sinatra app to deploy and fire up dev
+# nate@clixel.com 2002-?
 
-env.hosts = ['microcosm.opalstacked.com']
-env.user = 'cosm-www'
-env.shell = '/bin/bash -lic' # interactive shell to source .bashrc
-env.forward_agent = True
-env.project_name = 'onix-sinatra'
-env.path = '/home/cosm-www/apps/onix-api/%s' % env.project_name
-env.git_branch = 'master'
+from fabric import task
+from invoke import run as local
+from patchwork.transfers import rsync
 
-def deploy():
-  update()
-  bundle()
-  restart()
+# linode
+remote_path = "/var/www/onix-api/onix-sinatra"
+remote_hosts = ["natebeaty@dev.microcosmpublishing.com"]
+project_name = "onix-sinatra"
+git_branch = "master"
 
-def update():
-  with cd(env.path):
-    run('git pull origin %s' % env.git_branch)
+# opalstack
+# remote_hosts = ["cosm-www@microcosmpublishing.com"]
+# remote_path = "/home/cosm-www/apps/onix-api/onix-sinatra/"
+# project_name = "onix-sinatra"
+# git_branch = "master"
 
-def bundle():
-  with cd(env.path):
-    run('bundle install --quiet')
+# deploy
+@task(hosts=remote_hosts)
+def deploy(c,assets=None):
+    update(c)
+    bundle(c)
+    restart(c)
 
-def restart():
-  with cd(env.path):
-    run('../stop')
-    run('../start')
+def update(c):
+    c.run("cd {} && git pull origin {}".format(remote_path, git_branch))
 
-def dev():
-  local('bundle exec rackup -E development config.ru')
+def bundle(c):
+    c.run("cd {} && bundle install --quiet".format(remote_path))
+
+def restart(c):
+    c.run("cd {}; ../stop; ../start".format(remote_path))
+
+@task
+def dev(c):
+    local("bundle exec rackup -E development config.ru")
