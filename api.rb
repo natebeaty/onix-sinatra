@@ -59,7 +59,7 @@ class OnixApi < Sinatra::Base
 
         product.notification_type = 3
         product.measurement_system = :imperial
-        product.add_language('01', json_product['title'].downcase)
+        product.add_language('01', json_product['language'].downcase)
 
         product.title = json_product['title']
         if !json_product['subtitle'].blank?
