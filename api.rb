@@ -185,8 +185,9 @@ class OnixApi < Sinatra::Base
         json_product['bisacCodes'].each_with_index do |bisac_code, i|
           if i == 0
             product.basic_main_subject = bisac_code
+          else
+            product.add_bisac_subject(bisac_code)
           end
-          product.add_bisac_subject(bisac_code)
         end
 
         # codes for relatedProduct types
